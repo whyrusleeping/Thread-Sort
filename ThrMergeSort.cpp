@@ -1,5 +1,6 @@
 #include "ThrMergeSort.h"
 
+int _ThreadSortRecurDepth=1;
 
 void ThreadSort(vector<int> *arr)
 {
@@ -12,40 +13,22 @@ void _ThreadSort(vector<int> *arr, int start, int end, int depth)
 	//Find middle of array
 	int mid = (end + start) / 2;
 
-	if(depth > _ThreadSortRecurDepth)
-	{
-		//Break array into four segments by finding secondary midpoints
-		int midl = (mid + start) / 2;
-		int midr = (mid + end) / 2;
-
-		//Create thread to mergesort each of those four segments
-		thread tl(_mergeSort, arr, start, midl);
-		thread tlm (_mergeSort, arr, midl + 1, mid);
-		thread trm (_mergeSort, arr, mid + 1, midr);
-		thread tr(_mergeSort, arr, midr + 1, end);
-
-		//Wait for each thread to finish
-		tl.join();
-		tr.join();
-		tlm.join();
-		trm.join();
-
-		//merge left halves and right halves asynchronously
-		thread mergeTl(merge, arr, start, midl, mid);
-		thread mergeTr(merge, arr, mid + 1, midr, end);
-		mergeTl.join();
-		mergeTr.join();
-
-		//finally merge left with right
-		merge(arr, start, mid, end);
-	}
-	else
+	if(depth < _ThreadSortRecurDepth)
 	{
 		//Recursive threadsort on each half of the array.
 		thread tl(_ThreadSort, arr, start, mid, depth + 1);
 		thread tr(_ThreadSort, arr, mid + 1, end, depth + 1);
 		tl.join();
 		tr.join();
+		merge(arr, start, mid, end);
+	}
+	else
+	{
+		//Start standard mergesort
+		_mergeSort(arr, start, mid);
+		_mergeSort(arr, mid+1, end);
+
+		//finally merge left with right
 		merge(arr, start, mid, end);
 	}
 }

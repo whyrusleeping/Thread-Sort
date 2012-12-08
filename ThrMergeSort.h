@@ -9,7 +9,13 @@ using std::cout;
 using std::vector;
 
 //The maximum recursive depth (caps excess thread spawning)
-static int _ThreadSortRecurDepth = 2;
+/*class TSGlobals
+{
+	public:
+		static int _ThreadSortRecurDepth;
+};*/
+//TSGlobals::_ThreadSortRecurDepth = 2;
+extern int _ThreadSortRecurDepth;
 
 //Main call for threadsort
 void ThreadSort(vector<int> *arr);

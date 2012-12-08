@@ -5,10 +5,10 @@
 #include <iostream>
 
 using std::cout;
+
 int main(int argc, char *argv[])
 {
 	int count = 2000000;
-
 	//Handle command line arguments.
 	if(argc < 3)
 	{
@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	count = atoi(argv[1]);
-	_ThreadSortRecurDepth = atoi(argv[2]);
-
+	_ThreadSortRecurDepth = atoi(argv[2]); //Global variable to control threading
+	
 	//Initialize two arrays
 	vector<int> myar(count);
 	srand(time(NULL));
