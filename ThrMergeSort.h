@@ -8,11 +8,14 @@ using std::thread;
 using std::cout;
 using std::vector;
 
+//The maximum recursive depth (caps excess thread spawning)
+static int _ThreadSortRecurDepth = 2;
+
 //Main call for threadsort
 void ThreadSort(vector<int> *arr);
 
 //'Recursive' call for threadsort (i removed recursion on this due to performance issues)
-void _ThreadSort(vector<int> *arr, int start, int end);
+void _ThreadSort(vector<int> *arr, int start, int end, int depth);
 
 //Main call for mergesort (mostly just for comparison)
 void mergeSort(vector<int> *arr);

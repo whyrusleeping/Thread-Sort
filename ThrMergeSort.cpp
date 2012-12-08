@@ -4,17 +4,19 @@
 void ThreadSort(vector<int> *arr)
 {
 	//Call _Threadsort with appropriate parameters.
-	_ThreadSort(arr, 0, (*arr).size()-1); 
+	_ThreadSort(arr, 0, (*arr).size()-1, 0); 
 }
 
-void _ThreadSort(vector<int> *arr, int start, int end)
+void _ThreadSort(vector<int> *arr, int start, int end, int depth)
 {
-		//Find middle of array
-		int mid = (end - start) / 2;
+	//Find middle of array
+	int mid = (end + start) / 2;
 
+	if(depth > _ThreadSortRecurDepth)
+	{
 		//Break array into four segments by finding secondary midpoints
-		int midl = mid / 2;
-		int midr = (mid / 2) + mid;
+		int midl = (mid + start) / 2;
+		int midr = (mid + end) / 2;
 
 		//Create thread to mergesort each of those four segments
 		thread tl(_mergeSort, arr, start, midl);
@@ -36,6 +38,16 @@ void _ThreadSort(vector<int> *arr, int start, int end)
 
 		//finally merge left with right
 		merge(arr, start, mid, end);
+	}
+	else
+	{
+		//Recursive threadsort on each half of the array.
+		thread tl(_ThreadSort, arr, start, mid, depth + 1);
+		thread tr(_ThreadSort, arr, mid + 1, end, depth + 1);
+		tl.join();
+		tr.join();
+		merge(arr, start, mid, end);
+	}
 }
 
 void mergeSort(vector<int> *arr)
@@ -65,7 +77,7 @@ void merge(vector<int> *arr, int start, int mid, int end)
 
 	while(sortPos < sorted.size())
 	{
-		if(leftPos <= mid && rightPos <= end)
+		if(!leftPos > mid && !rightPos > end)
 		{			
 			if((*arr)[leftPos] < (*arr)[rightPos])
 				sorted[sortPos++] = (*arr)[leftPos++];
@@ -74,9 +86,9 @@ void merge(vector<int> *arr, int start, int mid, int end)
 		}
 		else
 		{
-			if(leftPos <= mid)
+			if(!leftPos > mid)
 				sorted[sortPos++] = (*arr)[leftPos++];
-			else if(rightPos <= end)
+			else if(!rightPos > end)
 				sorted[sortPos++] = (*arr)[rightPos++];
 			else
 				break;
