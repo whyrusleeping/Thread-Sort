@@ -8,7 +8,7 @@ One: Recursively calling threads is a bad idea, and it breaks things.
 Two: Spawning more threads than you have processors for actually slows things down. (who knew?)
 
 ## How To
-To run this yourself, I first reccomend that you have linux (I used linux libraries in my main.cpp for timing), users of Windows will have to write their own main function (or maybe ill write in some cross platform code laster)  
+To run this yourself, I first recommend that you have linux (I used linux libraries in my main.cpp for timing), users of Windows will have to write their own main function (or maybe ill write in some cross platform code later)  
 First Clone this project from github:
 
     git clone git://github.com/whyrusleeping/Thread-Sort.git
