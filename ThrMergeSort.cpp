@@ -1,25 +1,29 @@
 #include "ThrMergeSort.h"
 
+
 void ThreadSort(vector<int> *arr)
 {
-	_ThreadSort(arr, 0, (*arr).size()-1,0); 
+	_ThreadSort(arr, 0, (*arr).size()-1); 
 }
 
-void _ThreadSort(vector<int> *arr, int start, int end, int depth)
+void _ThreadSort(vector<int> *arr, int start, int end)
 {
-	int mid = (end - start) / 2;
-	if(depth < 2)
-	{
-		thread tl(_ThreadSort, arr, start, mid, depth +1);
-		thread tr(_ThreadSort, arr, mid+1, end, depth +1);
+		int mid = (end - start) / 2;
+		int midl = mid / 2;
+		int midr = (mid / 2) + mid;
+		thread tl(_mergeSort, arr, start, midl);
+		thread tlm (_mergeSort, arr, midl + 1, mid);
+		thread trm (_mergeSort, arr, mid + 1, midr);
+		thread tr(_mergeSort, arr, midr + 1, end);
 		tl.join();
 		tr.join();
+		tlm.join();
+		trm.join();
+		thread mergeTl(merge, arr, start, midl, mid);
+		thread mergeTr(merge, arr, mid + 1, midr, end);
+		mergeTl.join();
+		mergeTr.join();
 		merge(arr, start, mid, end);
-	}
-	else
-	{
-		_mergeSort(arr, start, end);
-	}
 }
 
 void mergeSort(vector<int> *arr)
