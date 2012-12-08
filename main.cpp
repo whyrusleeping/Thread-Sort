@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	vector<int> myar(count);
 	srand(time(NULL));
 	for(int i = 0; i < myar.size(); i++)
-		myar[i] = rand(); 
+		myar[i] = rand();// * rand() / (double)rand(); 
 	vector<int> myar2(myar);
 	
 	//Initialize timers
