@@ -12,18 +12,18 @@ using std::vector;
 extern int _ThreadSortRecurDepth;
 
 //Main call for threadsort
-void ThreadSort(vector<int> *arr);
+void ThreadSort( vector<int> &arr);
 
 //'Recursive' call for threadsort (i removed recursion on this due to performance issues)
-void _ThreadSort(vector<int> *arr, int start, int end, int depth);
+void _ThreadSort( vector<int> &arr, int start, int end, int depth);
 
 //Main call for mergesort (mostly just for comparison)
-void mergeSort(vector<int> *arr);
+void mergeSort( vector<int> &arr);
 
 //Recursive mergesort call
-void _mergeSort(vector<int> *arr, int start, int end);
+void _mergeSort( vector<int> &arr, int start, int end);
 
 //Merge arr[start:mid] with arr[mid+1:end]
-void merge(vector<int> *arr, int start, int mid, int end);
+void merge( vector<int> &arr, int start, int mid, int end);
 
 #endif
